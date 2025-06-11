@@ -1,15 +1,19 @@
 package toy.lsd.playground.p3news;
 
-import io.reactivex.rxjava3.processors.PublishProcessor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-import reactor.adapter.rxjava.RxJava3Adapter;
-import reactor.core.publisher.Flux;
-import io.reactivex.rxjava3.core.BackpressureStrategy;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import io.reactivex.rxjava3.processors.PublishProcessor;
+import reactor.adapter.rxjava.RxJava3Adapter;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("/news")
