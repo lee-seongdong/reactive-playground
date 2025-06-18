@@ -1,4 +1,4 @@
-package toy.lsd.playground.p4board.board.entity;
+package toy.lsd.playground.p4board.comment.entity;
 
 import java.time.LocalDateTime;
 
@@ -7,28 +7,21 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Table("board")
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Board {
+@Table("comment")
+public class Comment {
 	@Id
 	private Long id;
 
-	@Column("title")
-	private String title;
+	@Column("board_id")
+	private Long boardId;
 
 	@Column("content")
 	private String content;
@@ -49,9 +42,4 @@ public class Board {
 	@LastModifiedDate
 	private LocalDateTime modifiedDateTime;
 
-	@Transient
-	private String memo;
-
-	@Transient
-	private Long viewCount = 0L;
 }

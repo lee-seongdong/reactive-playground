@@ -16,7 +16,7 @@ public class R2DBCConfig {
     @Bean
     public ReactiveAuditorAware<String> auditorAware() {
         return () -> Mono.deferContextual(contextView -> {
-            String entityType = contextView.get("entityType");
+            String entityType = contextView.getOrDefault("entityType", "");
 
             if ("board".equals(entityType)) {
                 return Mono.just("user");
