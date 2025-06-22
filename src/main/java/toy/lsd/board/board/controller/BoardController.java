@@ -1,6 +1,8 @@
 package toy.lsd.board.board.controller;
 
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +17,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import toy.lsd.board.board.entity.Board;
 import toy.lsd.board.board.service.BoardService;
+import toy.lsd.board.member.entity.Member;
 
+/**
+ * 📋 게시판 컨트롤러 - Method Security 적용
+ * 
+ * @PreAuthorize 어노테이션으로 메소드별 권한 제어
+ */
 @RestController
 @RequestMapping("/api/boards")
 @RequiredArgsConstructor
@@ -23,10 +31,7 @@ public class BoardController {
 	private final BoardService boardService;
 
 	/**
-	 * 🆕 무한스크롤용 게시글 목록 조회 (REST API)
-	 * @param page 페이지 번호 (기본값: 0)
-	 * @param size 페이지 크기 (기본값: 5)
-	 * @return 페이징된 게시글 목록
+	 * 🆕 무한스크롤용 게시글 목록 조회 (모든 사용자 허용)
 	 */
 	@GetMapping
 	public Flux<Board> getBoards(
@@ -37,8 +42,7 @@ public class BoardController {
 	}
 
 	/**
-	 * 🆕 새 게시글 실시간 알림 (SSE)
-	 * @return 새로 생성된 게시글만 스트리밍
+	 * 🆕 새 게시글 실시간 알림 (모든 사용자 허용)
 	 */
 	@GetMapping(value = "/new-posts", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public Flux<Board> getNewPostsStream() {
@@ -47,35 +51,49 @@ public class BoardController {
 	}
 
 	/**
-	 * 게시글 생성 (실시간 알림 포함)
-	 * @param board 생성할 게시글
-	 * @return 생성된 게시글
+	 * 📝 게시글 생성 - ADMIN 권한만 허용
 	 */
 	@PostMapping
-	public Mono<Board> createBoard(@RequestBody Board board) {
-		System.out.println("✍️ 새 게시글 생성: " + board.getTitle());
+	@PreAuthorize("hasRole('ADMIN')")  // 👑 ADMIN 권한만 허용
+	public Mono<Board> createBoard(
+			@AuthenticationPrincipal Member member,
+			@RequestBody BoardCreateRequest boardRequest) {
+		
+		System.out.println("✍️ 새 게시글 생성: " + boardRequest.title());
+		System.out.println("👤 게시글 작성자: " + member.getName());
+		
+		Board board = new Board();
+		board.setTitle(boardRequest.title());
+		board.setContent(boardRequest.content());
+		board.setRegistrant(member.getName());  // 로그인된 Member의 이름 사용
+		board.setModifier(member.getName());
+		board.setMemo(boardRequest.memo());
+		
 		return boardService.createBoard(board);
 	}
 
 	/**
-	 * 게시글 상세 조회
-	 * @param id 게시글 ID
-	 * @return 조회수 포함된 게시글
+	 * 게시글 상세 조회 - 로그인된 사용자만 허용
 	 */
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")  // 👤 로그인 필요
 	public Mono<Board> getBoard(@PathVariable Long id) {
 		System.out.println("🔍 게시글 상세 조회: " + id);
 		return boardService.getBoardById(id);
 	}
 
 	/**
-	 * 게시글 삭제
-	 * @param id 삭제할 게시글 ID
-	 * @return 삭제 완료 신호
+	 * 게시글 삭제 - ADMIN 권한만 허용
 	 */
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")  // 👑 ADMIN 권한만 허용
 	public Mono<Void> deleteBoard(@PathVariable Long id) {
 		System.out.println("🗑️ 게시글 삭제: " + id);
 		return boardService.deleteBoard(id);
 	}
+
+	/**
+	 * 📋 게시글 생성 요청 DTO
+	 */
+	public record BoardCreateRequest(String title, String content, String memo) {}
 }

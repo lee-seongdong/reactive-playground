@@ -1,11 +1,43 @@
 import {Link, Route, Routes, useLocation} from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import './App.css'
 import HomePage from './pages/HomePage'
 import BoardDetailPage from './pages/BoardDetailPage'
 import DashboardPage from './pages/DashboardPage'
+import LoginPage from './pages/LoginPage'
 
 function App() {
     const location = useLocation();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userInfo, setUserInfo] = useState(null);
+
+    // 로그인 상태 확인
+    useEffect(() => {
+        const token = localStorage.getItem('authToken');
+        const userId = localStorage.getItem('userId');
+        const userRoles = localStorage.getItem('userRoles');
+        
+        if (token && userId) {
+            setIsLoggedIn(true);
+            setUserInfo({
+                id: userId,
+                roles: userRoles ? JSON.parse(userRoles) : []
+            });
+        }
+    }, []);
+
+    // 로그아웃 처리
+    const handleLogout = () => {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userRoles');
+        setIsLoggedIn(false);
+        setUserInfo(null);
+        window.location.href = '/';
+    };
+
+    // 관리자 권한 확인
+    const isAdmin = userInfo?.roles?.includes('ADMIN');
 
     return (
         <div className="app">
@@ -29,6 +61,26 @@ function App() {
                         >
                             📊 대시보드
                         </Link>
+                        
+                        {/* 로그인 상태에 따른 네비게이션 */}
+                        {isLoggedIn ? (
+                            <div className="user-menu">
+                                <span className="user-info">
+                                    {isAdmin ? '👑' : '👤'} {userInfo.id}
+                                    {isAdmin && <span className="admin-badge">ADMIN</span>}
+                                </span>
+                                <button onClick={handleLogout} className="logout-btn">
+                                    🚪 로그아웃
+                                </button>
+                            </div>
+                        ) : (
+                            <Link 
+                                to="/login" 
+                                className={`nav-link login-nav ${location.pathname === '/login' ? 'active' : ''}`}
+                            >
+                                🔐 로그인
+                            </Link>
+                        )}
                     </div>
                 </div>
             </nav>
@@ -39,6 +91,7 @@ function App() {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/board/:boardId" element={<BoardDetailPage />} />
                     <Route path="/dashboard" element={<DashboardPage />} />
+                    <Route path="/login" element={<LoginPage />} />
                     <Route path="*" element={
                         <div id="board">
                             <div className="error-message">

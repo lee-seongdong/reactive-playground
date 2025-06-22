@@ -37,26 +37,101 @@
 
 .nav-menu {
   display: flex;
-  gap: 20px;
+  align-items: center;
+  gap: 15px;
 }
 
 .nav-link {
   color: white;
   text-decoration: none;
   padding: 8px 16px;
-  border-radius: 20px;
-  transition: all 0.2s ease;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
   font-weight: 500;
 }
 
 .nav-link:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-1px);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .nav-link.active {
-  background: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.2);
   font-weight: 600;
+}
+
+/* 🔐 사용자 메뉴 스타일 */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-info {
+  color: white;
+  font-weight: 500;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.admin-badge {
+  background: #e74c3c;
+  color: white;
+  font-size: 0.7em;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    background: #e74c3c;
+    transform: scale(1);
+  }
+  50% { 
+    background: #c0392b;
+    transform: scale(1.05);
+  }
+}
+
+.logout-btn {
+  background: rgba(231, 76, 60, 0.9);
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.logout-btn:hover {
+  background: #c0392b;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+}
+
+.logout-btn:active {
+  transform: translateY(0);
+}
+
+.login-nav {
+  background: rgba(46, 204, 113, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.login-nav:hover {
+  background: #27ae60;
+  transform: translateY(-1px);
 }
 
 /* 메인 컨텐츠 */
@@ -466,6 +541,17 @@ tr.selected {
   font-size: 1.5em;
 }
 
+.form-description {
+  text-align: center;
+  color: #666;
+  margin: 0 0 25px 0;
+  font-size: 0.95em;
+  background: #f8f9fa;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
 .board-form {
   max-width: 600px;
   margin: 0 auto;
@@ -853,4 +939,331 @@ tr.selected {
   .coming-soon h2 {
     font-size: 1.5em;
   }
+}
+
+/* 🔐 로그인 페이지 스타일 */
+.login-page {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.login-container {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-header h1 {
+  margin: 0 0 8px 0;
+  color: #2c3e50;
+  font-size: 2.2em;
+  font-weight: 700;
+}
+
+.login-header p {
+  margin: 0;
+  color: #7f8c8d;
+  font-size: 1em;
+}
+
+.login-form {
+  margin-bottom: 30px;
+}
+
+.login-form .form-group {
+  margin-bottom: 20px;
+}
+
+.login-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 0.95em;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e0e6ed;
+  border-radius: 10px;
+  font-size: 1em;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  background: #f8f9fa;
+}
+
+.login-form input:focus {
+  outline: none;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  transform: translateY(-1px);
+}
+
+.login-form input:disabled {
+  background: #e9ecef;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+.error-message {
+  background: #ffebee;
+  color: #c62828;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 4px solid #e53935;
+  font-size: 0.9em;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.login-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 16px 20px;
+  border-radius: 10px;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5a6fd8, #6a4190);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.login-btn:active {
+  transform: translateY(0);
+}
+
+.login-btn:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.test-accounts {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 25px;
+  border: 1px solid #e9ecef;
+}
+
+.test-accounts h3 {
+  margin: 0 0 15px 0;
+  color: #2c3e50;
+  font-size: 1.1em;
+  text-align: center;
+}
+
+.test-buttons {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.test-btn {
+  padding: 12px 16px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.test-btn.admin {
+  color: #e74c3c;
+  border-color: #e74c3c;
+}
+
+.test-btn.admin:hover:not(:disabled) {
+  background: #e74c3c;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.test-btn.user {
+  color: #3498db;
+  border-color: #3498db;
+}
+
+.test-btn.user:hover:not(:disabled) {
+  background: #3498db;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.test-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.login-info {
+  background: #e8f4fd;
+  border-radius: 10px;
+  padding: 20px;
+  border-left: 4px solid #3498db;
+}
+
+.login-info h4 {
+  margin: 0 0 12px 0;
+  color: #2c3e50;
+  font-size: 1em;
+}
+
+.login-info ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #34495e;
+}
+
+.login-info li {
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+  .login-page {
+    padding: 15px;
+    align-items: flex-start;
+    padding-top: 40px;
+  }
+  
+  .login-container {
+    padding: 30px 25px;
+  }
+  
+  .login-header h1 {
+    font-size: 1.8em;
+  }
+  
+  .test-buttons {
+    gap: 8px;
+  }
+  
+  .test-btn {
+    padding: 10px 14px;
+    font-size: 0.85em;
+  }
+}
+
+/* 🔐 인증 상태 및 메시지 스타일 */
+.auth-status {
+  color: #27ae60;
+  font-weight: 600;
+  margin-left: 10px;
+}
+
+.auth-message {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  margin-top: 40px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border: 2px solid #e9ecef;
+}
+
+.auth-message h3 {
+  margin: 0 0 15px 0;
+  font-size: 1.4em;
+}
+
+.auth-message p {
+  margin: 8px 0;
+  color: #555;
+  line-height: 1.5;
+}
+
+.login-required {
+  border-left: 4px solid #3498db;
+  background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
+}
+
+.login-required h3 {
+  color: #1976d2;
+}
+
+.user-message {
+  border-left: 4px solid #ff9800;
+  background: linear-gradient(135deg, #fff8f1, #ffecb3);
+}
+
+.user-message h3 {
+  color: #e65100;
+}
+
+.login-redirect-btn {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 20px 0;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.login-redirect-btn:hover {
+  background: linear-gradient(135deg, #2980b9, #1f4e79);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+}
+
+.login-redirect-btn:active {
+  transform: translateY(0);
+}
+
+.test-account-info {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 15px;
+  border: 1px solid #ddd;
+}
+
+.test-account-info p {
+  margin: 4px 0;
+  font-size: 0.9em;
+}
+
+.test-account-info p:first-child {
+  font-size: 1em;
+  margin-bottom: 8px;
 } 
