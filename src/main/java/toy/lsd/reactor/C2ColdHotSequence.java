@@ -24,9 +24,10 @@ public class C2ColdHotSequence {
 
 	@SneakyThrows
 	private static void ex2_HotSequence() {
-		// 구독 시점 이후 생성된 데이터만 전달 받음
-		// 최초 구독 시점부터 데이터가 발행되는 warm up,
-		// 구독 여부와 상관없이 데이터가 발행되는 hot 으로 구분할 수 있다.
+		/* 구독 시점 이후 생성된 데이터만 전달 받음
+		 * 최초 구독 시점부터 데이터가 발행되는 warm up,
+		 * 구독 여부와 상관없이 데이터가 발행되는 hot 으로 구분할 수 있다.
+		 */
 		String[] names = {"A", "B", "C", "D", "E", "F"};
 		Flux<String> hotFlux = Flux.fromArray(names)
 			.delayElements(Duration.ofSeconds(1)) // delayElements의 디폴트 스케줄러: parallel
