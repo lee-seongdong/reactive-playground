@@ -9,6 +9,19 @@ import lombok.SneakyThrows;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ *
+ * 리액티브 스트림즈 : 비동기 스트림 처리를 위한 표준 API 스펙
+ * - 비동기 및 논블로킹
+ * - 백프레셔를 통해 데이터 흐름 제어
+ * - 주요 표준 인터페이스 : Publisher, Subscriber, Subscription, Processor
+ *
+ * 주요 구현체
+ * - Reactor (Spring WebFlux에서 사용)
+ * - RxJava (Android 개발 시 주로 사용)
+ * - Flow API (Java 9+ 내장)
+ *
+ */
 public class C1Basic {
 	private static void ex1_Mono() {
 		Mono.just("Hello World!")
