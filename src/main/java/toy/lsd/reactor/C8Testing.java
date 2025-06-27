@@ -2,6 +2,7 @@ package toy.lsd.reactor;
 
 import java.util.Base64;
 
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
@@ -9,6 +10,7 @@ import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 // test.java.toy.lsd.reactor.C8Testing
+@Slf4j
 public class C8Testing {
 	public static Flux<String> sayHello() {
 		return Flux.just("Hello", "Reactor");
@@ -66,5 +68,24 @@ public class C8Testing {
 			.zipWith(Mono.deferContextual(contextView -> Mono.just((String)contextView.get("secretKey"))))
 			.filter(tp -> tp.getT1().equals(new String(Base64.getDecoder().decode(tp.getT2()))))
 			.transformDeferredContextual(((mono, contextView) -> mono.map(notUse -> contextView.get("secretMessage"))));
+	}
+
+	public static Flux<String> getCapitalizedCountry(Flux<String> source) {
+		return source
+			.map(country -> country.substring(0, 1).toUpperCase() + country.substring(1));
+	}
+
+	public static Mono<String> processTask(Mono<String> main, Mono<String> standby) {
+		return main
+			.flatMap(Mono::just)
+			.switchIfEmpty(standby); // 데이터 emit 없이 종료되는 경우 대체할 publisher를 지정
+	}
+
+	public static Mono<String> supplyMainPower() {
+		return Mono.empty();
+	}
+
+	public static Mono<String> supplyStandbyPower() {
+		return Mono.just("# supply Standby Power");
 	}
 }
