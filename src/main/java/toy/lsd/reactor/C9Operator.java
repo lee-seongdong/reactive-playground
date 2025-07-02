@@ -317,14 +317,14 @@ public class C9Operator {
 	/// 3. 변환 Operator
 	private static void ex22_map() {
 		Flux.range(1, 5)
-			.map(i -> i * 2) // 각 요소를 2배로 변환
+			.map(i -> i * 2) // 각 요소를 2배로 변환 (동기)
 			.subscribe(data -> log.info("# onNext: {}", data));
 	}
 
 	@SneakyThrows
 	private static void ex23_flatMap() {
 		Flux.just(2, 3, 4)
-			.flatMap(dan -> Flux.range(1, 9) // inner sequence들을 flatten하고, 하나의 sequence로 merge
+			.flatMap(dan -> Flux.range(1, 9) // inner sequence들을 flatten하고, 하나의 sequence로 merge (비동기)
 				.publishOn(Schedulers.parallel())
 				.map(i -> dan + " * " + i + " = " + (dan * i)))
 			.subscribe(data -> log.info("# onNext: {}", data));
